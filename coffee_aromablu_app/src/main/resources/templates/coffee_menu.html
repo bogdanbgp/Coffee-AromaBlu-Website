@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Header -->
+<header>
+    <h1>Coffee Menu</h1>
+</header>
+
+<!-- Menu Section -->
+<section class="menu-section">
+    <h2>Available Coffees</h2>
+    <ul>
+        <!-- Thymeleaf Loop for Coffees -->
+        <li th:each="coffee : ${coffees}">
+            <!-- Coffee Name and Price -->
+            <span th:text="${coffee.name}"></span> - <span th:text="'$' + ${coffee.price}"></span><br/>
+            <!-- Nutritional Facts -->
+            <span>Nutritional Facts: </span><span th:text="${coffee.nutritionalFacts}"></span><br/>
+            <!-- Coffee Origin -->
+            <span>Origin: </span><span th:text="${coffee.origin}"></span><br/>
+            <!-- Combo -->
+            <span>Combo: </span><span th:text="${coffee.combo}"></span><br/><br/>
+        </li>
+    </ul>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>Copyright © 2024 Coffee AromaBlu. All rights reserved.</p>
+</footer>
+</body>
+</html>

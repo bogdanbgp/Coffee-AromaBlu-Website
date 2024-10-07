@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Coffee AromaBlu</title>
+    <style>
+        /* CSS styles here */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top */
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: #555;
+        }
+
+        .separator {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <!-- Main Content -->
+    <h1>Welcome to Coffee AromaBlu</h1>
+    <p>Explore our delicious coffees and fun accessories and don't miss our weekly promotions!</p>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a th:href="@{/coffees}">View Coffees</a>
+        <a th:href="@{/accessories}">View Accessories</a>
+        <a th:href="@{/promotions}">View Promotions</a>
+        <a th:href="@{/exit}">Exit</a>
+    </div>
+
+    <!-- Separator -->
+    <div class="separator">
+        <hr>
+    </div>
+
+    <!-- Additional Navigation Links -->
+    <div class="nav-links">
+        <a th:href="@{/order}">Place Order</a>
+    </div>
+
+    <!-- Footer -->
+    <p>Copyright © 2024 Coffee AromaBlu. All rights reserved.</p>
+</div>
+</body>
+</html>

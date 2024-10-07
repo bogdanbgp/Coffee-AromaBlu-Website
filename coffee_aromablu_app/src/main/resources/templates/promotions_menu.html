@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotions Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Promotions Menu</h1>
+</header>
+<section class="menu-section">
+    <!-- Special Promotions -->
+    <h2>Special Promotions</h2>
+    <p th:text="${promotionMessage}"></p>
+    <p th:text="${bringFriendPromotion}"></p>
+</section>
+<!-- Footer -->
+<footer>
+    <p>Copyright © 2024 Coffee AromaBlu. All rights reserved.</p>
+</footer>
+</body>
+</html>

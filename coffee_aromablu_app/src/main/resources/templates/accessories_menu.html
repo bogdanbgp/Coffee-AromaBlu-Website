@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title -->
+    <title>Accessories Menu</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Page Header -->
+<header>
+    <h1>Accessories Menu</h1>
+</header>
+
+<!-- Menu Section -->
+<section class="menu-section">
+    <h2>Available Accessories</h2>
+    <ul>
+        <!-- Thymeleaf Loop for Accessories -->
+        <!--
+        This line iterates over the 'accessories' list passed from the server.
+        For each 'accessory', it creates a list item displaying the accessory name
+        and its price, formatted as currency.
+        -->
+        <li th:each="accessory : ${accessories}">
+            <span th:text="${accessory.name}"></span> -
+            <span th:text="'$' + ${accessory.price}"></span><br/>
+        </li>
+    </ul>
+</section>
+
+<!-- Page Footer -->
+<footer>
+    <p>Copyright © 2024 Coffee AromaBlu. All rights reserved.</p>
+</footer>
+</body>
+</html>

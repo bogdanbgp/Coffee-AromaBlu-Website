@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-button:hover {
+            background-color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Page Header -->
+    <h1>Place Your Order</h1>
+
+    <!-- Order Form -->
+    <form id="orderForm" action="/orderConfirmation" method="post">
+        <!-- Customer Name Input -->
+        <label for="customerName">Customer Name (optional):</label><br>
+        <input type="text" id="customerName" name="customerName"><br>
+
+        <!-- Select Item Dropdown -->
+        <label for="itemName">Select Item:</label><br>
+        <select id="itemName" name="itemName" onchange="updatePrice()" required>
+            <option value="" disabled selected>Select an item</option>
+            <!-- Coffee Options -->
+            <optgroup label="Coffees">
+                <!-- Thymeleaf Loop for Coffees -->
+                <th:block th:each="coffee : ${coffees}">
+                    <option th:value="${coffee.price}" th:text="${coffee.name}"></option>
+                </th:block>
+            </optgroup>
+            <!-- Accessories Options -->
+            <optgroup label="Accessories">
+                <!-- Thymeleaf Loop for Accessories -->
+                <th:block th:each="accessory : ${accessories}">
+                    <option th:value="${accessory.price}" th:text="${accessory.name}"></option>
+                </th:block>
+            </optgroup>
+        </select><br>
+
+        <!-- Price Input (Read-only) -->
+        <label for="price">Price ($):</label><br>
+        <input type="number" id="price" name="price" step="0.01" required readonly><br>
+
+        <!-- Message Textarea -->
+        <label for="message">Any Mentions (optional):</label><br>
+        <textarea id="message" name="message"></textarea><br>
+
+        <!-- Place Order Button -->
+        <button type="button" onclick="validateAndSubmit()">Place Order</button>
+    </form>
+
+    <!-- Order Confirmation Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <!-- Order Confirmation Message -->
+            <p id="orderMessage"></p>
+            <!-- Go back to Main Menu Button -->
+            <button class="modal-button" onclick="closeModal()">Go back to Main Menu</button>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer>
+        <p>Copyright © 2024 Coffee AromaBlu. All rights reserved.</p>
+    </footer>
+</div>
+
+<!-- JavaScript Section -->
+<script>
+    var itemNameSelect = document.getElementById("itemName");
+    var priceInput = document.getElementById("price");
+    var orderModal = document.getElementById("orderModal");
+    var orderMessage = document.getElementById("orderMessage");
+
+    // Function to update price when item is selected
+    function updatePrice() {
+        var selectedOption = itemNameSelect.options[itemNameSelect.selectedIndex];
+        priceInput.value = selectedOption.value.toString();
+    }
+
+    // Function to validate and submit order
+    function validateAndSubmit() {
+        if (itemNameSelect.selectedIndex === 0) {
+            alert("Please choose an item.");
+            return;
+        }
+
+        showOrderConfirmation();
+    }
+
+    // Function to display order confirmation modal
+    function showOrderConfirmation() {
+        var itemName = itemNameSelect.options[itemNameSelect.selectedIndex].text;
+        var price = priceInput.value;
+        var message = "Your order for " + itemName + " has been successfully placed. You may retrieve it from the counter at your convenience. The total price amounts to $" + price + ". Payment can be made using either cash or card.";
+
+        orderMessage.textContent = message;
+        orderModal.style.display = "block";
+    }
+
+    // Function to close modal and redirect to main menu
+    function closeModal() {
+        orderModal.style.display = "none";
+        window.location.href = "/";
+    }
+
+    // Window onload function to fetch data
+    window.onload = function() {
+        fetch('/api/coffees')
+            .then(response => response.json())
+            .then(coffeesData => {
+                if (coffeesData && coffeesData.coffees && Array.isArray(coffeesData.coffees)) {
+                    var coffees = coffeesData.coffees.map(coffee => ({
+                        name: coffee.name,
+                        price: coffee.price
+                    }));
+
+        fetch('/api/accessories')
+            .then(response => response.json())
+            .then(accessoriesData => {
+                if (accessoriesData && Array.isArray(accessoriesData)) {
+                    var accessories = accessoriesData.map(accessory => ({
+                        name: accessory.name,
+                        price: accessory.price
+                    }));
+
+                                // Populate Items in Dropdown
+                                populateItems(coffees, accessories);
+                            } else {
+                                console.error('Invalid response format for accessories:', accessoriesData);
+                            }
+                        })
+                        .catch(error => console.error('Error fetching accessories:', error));
+                } else {
+                    console.error('Invalid response format for coffees:', coffeesData);
+                }
+            })
+            .catch(error => console.error('Error fetching coffees:', error));
+    };
+
+    // Function to populate items in dropdown
+    function populateItems(coffees, accessories) {
+        coffees.forEach(function(coffee) {
+            var option = document.createElement("option");
+            option.text = coffee.name;
+            option.value = coffee.price;
+            itemNameSelect.add(option);
+        });
+
+        accessories.forEach(function(accessory) {
+            var option = document.createElement("option");
+            option.text = accessory.name;
+            option.value = accessory.price;
+            itemNameSelect.add(option);
+        });
+    }
+</script>
+<!-- End of JavaScript Section -->
+</body>
+</html>
